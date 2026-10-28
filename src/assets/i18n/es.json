@@ -1,0 +1,22 @@
+{
+    "COMMON": {
+        "EMPTY_TITLE": "No se encontraron resultados",
+        "EMPTY_DESC": "No hay registros que coincidan con los criterios de búsqueda.",
+        "ERROR_TITLE": "No se pudieron cargar los datos",
+        "ERROR_DESC": "No se pudo conectar con el servidor. Por favor, verifique su conexión e intente nuevamente.",
+        "RETRY": "Reintentar",
+        "ADD": "Agregar"
+    },
+    "AUTH": {
+        "LOGIN_TITLE": "Iniciar Sesión",
+        "LOGIN_SUBTITLE": "Ingresá a tu cuenta para gestionar adopciones y favoritos",
+        "EMAIL": "Correo Electrónico",
+        "PASSWORD": "Contraseña",
+        "EMAIL_REQUIRED": "El correo electrónico es obligatorio y debe ser válido",
+        "PASSWORD_REQUIRED": "La contraseña es obligatoria",
+        "SUBMIT_LOGIN": "Ingresar",
+        "NO_ACCOUNT": "¿No tenés una cuenta?",
+        "REGISTER_LINK": "Registrate acá",
+        "LOGIN_SUCCESS": "Bienvenido/a de nuevo"
+    }
+}

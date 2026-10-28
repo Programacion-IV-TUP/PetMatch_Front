@@ -1,0 +1,22 @@
+{
+    "COMMON": {
+        "EMPTY_TITLE": "No results found",
+        "EMPTY_DESC": "There are no records matching your criteria.",
+        "ERROR_TITLE": "Unable to load data",
+        "ERROR_DESC": "Could not connect to the backend server. Please check your connection and try again.",
+        "RETRY": "Retry",
+        "ADD": "Add"
+    },
+    "AUTH": {
+        "LOGIN_TITLE": "Log In",
+        "LOGIN_SUBTITLE": "Sign in to manage adoptions and favorites",
+        "EMAIL": "Email Address",
+        "PASSWORD": "Password",
+        "EMAIL_REQUIRED": "Email is required and must be valid",
+        "PASSWORD_REQUIRED": "Password is required",
+        "SUBMIT_LOGIN": "Log In",
+        "NO_ACCOUNT": "Don't have an account?",
+        "REGISTER_LINK": "Register here",
+        "LOGIN_SUCCESS": "Welcome back"
+    }
+}
