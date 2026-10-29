@@ -1,0 +1,48 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">PetMatch</h1>
+            <p class="text-sm text-gray-600 mt-2">{{ 'AUTH.LOGIN_SUBTITLE' | transloco }}</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+            <div>
+                <label for="email_address" class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ 'AUTH.EMAIL' | transloco }}
+                </label>
+                <input id="email_address" type="email" pInputText formControlName="email_address"
+                    class="w-full p-inputtext-sm" placeholder="usuario@ejemplo.com" />
+                @if (isFieldInvalid('email_address')) {
+                <small class="text-red-500 text-xs block mt-1">
+                    {{ 'AUTH.EMAIL_REQUIRED' | transloco }}
+                </small>
+                }
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ 'AUTH.PASSWORD' | transloco }}
+                </label>
+                <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false"
+                    styleClass="w-full" inputStyleClass="w-full p-inputtext-sm">
+                </p-password>
+                @if (isFieldInvalid('password')) {
+                <small class="text-red-500 text-xs block mt-1">
+                    {{ 'AUTH.PASSWORD_REQUIRED' | transloco }}
+                </small>
+                }
+            </div>
+
+            <p-button type="submit" [label]="'AUTH.SUBMIT_LOGIN' | transloco" styleClass="w-full p-button-primary"
+                [loading]="isLoading()" [disabled]="loginForm.invalid || isLoading()">
+            </p-button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            {{ 'AUTH.NO_ACCOUNT' | transloco }}
+            <a routerLink="/auth/register" class="text-blue-600 font-semibold hover:underline">
+                {{ 'AUTH.REGISTER_LINK' | transloco }}
+            </a>
+        </div>
+    </div>
+</div>
