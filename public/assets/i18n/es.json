@@ -17,6 +17,19 @@
         "SUBMIT_LOGIN": "Ingresar",
         "NO_ACCOUNT": "¿No tenés una cuenta?",
         "REGISTER_LINK": "Registrate acá",
-        "LOGIN_SUCCESS": "Bienvenido/a de nuevo"
+        "LOGIN_SUCCESS": "Bienvenido/a de nuevo",
+        "REGISTER_TITLE": "Crear Cuenta",
+        "REGISTER_SUBTITLE": "Creá tu cuenta para gestionar adopciones y transitados",
+        "FIRST_NAME": "Nombre",
+        "LAST_NAME": "Apellido",
+        "FULL_NAME": "Nombre completo",
+        "CONFIRM_PASSWORD": "Confirmar contraseña",
+        "FULL_NAME_REQUIRED": "El nombre completo es obligatorio",
+        "PASSWORD_MINLENGTH": "La contraseña debe tener al menos 6 caracteres",
+        "PASSWORDS_MUST_MATCH": "Las contraseñas deben coincidir",
+        "SUBMIT_REGISTER": "Crear Cuenta",
+        "SUBMITTING_REGISTER": "Registrando...",
+        "ALREADY_HAVE_ACCOUNT": "¿Ya tenés cuenta?",
+        "LOGIN_LINK": "Ingresá acá"
     }
 }

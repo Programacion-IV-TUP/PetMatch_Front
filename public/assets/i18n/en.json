@@ -8,15 +8,28 @@
         "ADD": "Add"
     },
     "AUTH": {
-        "LOGIN_TITLE": "Log In",
-        "LOGIN_SUBTITLE": "Sign in to manage adoptions and favorites",
+        "LOGIN_TITLE": "Sign In",
+        "LOGIN_SUBTITLE": "Sign in to your account to manage adoptions and favorites",
         "EMAIL": "Email Address",
         "PASSWORD": "Password",
         "EMAIL_REQUIRED": "Email is required and must be valid",
         "PASSWORD_REQUIRED": "Password is required",
-        "SUBMIT_LOGIN": "Log In",
+        "SUBMIT_LOGIN": "Sign In",
         "NO_ACCOUNT": "Don't have an account?",
         "REGISTER_LINK": "Register here",
-        "LOGIN_SUCCESS": "Welcome back"
+        "LOGIN_SUCCESS": "Welcome back",
+        "REGISTER_TITLE": "Create Account",
+        "REGISTER_SUBTITLE": "Create your account to manage adoptions and temporary fosters",
+        "FIRST_NAME": "First name",
+        "LAST_NAME": "Last name",
+        "FULL_NAME": "Full name",
+        "CONFIRM_PASSWORD": "Confirm password",
+        "FULL_NAME_REQUIRED": "Full name is required",
+        "PASSWORD_MINLENGTH": "Password must be at least 6 characters long",
+        "PASSWORDS_MUST_MATCH": "Passwords must match",
+        "SUBMIT_REGISTER": "Create Account",
+        "SUBMITTING_REGISTER": "Registering...",
+        "ALREADY_HAVE_ACCOUNT": "Already have an account?",
+        "LOGIN_LINK": "Log in here"
     }
 }
