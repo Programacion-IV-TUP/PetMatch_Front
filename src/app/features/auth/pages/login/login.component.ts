@@ -1,23 +1,24 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
-import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
+import { TranslocoModule } from '@ngneat/transloco';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
     selector: 'app-login',
     standalone: true,
     imports: [
+        CommonModule,
         ReactiveFormsModule,
         RouterLink,
         InputTextModule,
+        TranslocoModule,
         PasswordModule,
-        ButtonModule,
-        TranslocoPipe
+        ButtonModule
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
@@ -25,40 +26,41 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class LoginComponent {
     private fb = inject(FormBuilder);
     private authService = inject(AuthService);
-    private messageService = inject(MessageService);
-    private translocoService = inject(TranslocoService);
     private router = inject(Router);
 
+    // Reactive signal tracking network operation state
     isLoading = signal<boolean>(false);
 
-    loginForm: FormGroup = this.fb.group({
-        email_address: ['', [Validators.required, Validators.email]],
+    // Login form definition mapping to OpenAPI /login specification
+    loginForm = this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required]]
     });
 
-    isFieldInvalid(field: string): boolean {
-        const control = this.loginForm.get(field);
+    // Helper method to evaluate field validation status in template
+    isFieldInvalid(fieldName: string): boolean {
+        const control = this.loginForm.get(fieldName);
         return !!(control && control.invalid && (control.dirty || control.touched));
     }
 
     onSubmit(): void {
-        if (this.loginForm.invalid || this.isLoading()) return;
+        if (this.loginForm.invalid) return;
 
         this.isLoading.set(true);
-        this.loginForm.disable();
+        const credentials = this.loginForm.getRawValue();
 
-        this.authService.login(this.loginForm.value).subscribe({
+        // Dispatch authentication payload to Rails backend
+        this.authService.login({
+            email: credentials.email || '',
+            password: credentials.password || ''
+        }).subscribe({
             next: () => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'PetMatch',
-                    detail: this.translocoService.translate('AUTH.LOGIN_SUCCESS')
-                });
+                this.isLoading.set(false);
                 this.router.navigate(['/pets']);
             },
-            error: () => {
+            error: (err) => {
                 this.isLoading.set(false);
-                this.loginForm.enable();
+                console.error('Error logging in:', err);
             }
         });
     }
