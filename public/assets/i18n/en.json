@@ -30,6 +30,85 @@
         "SUBMIT_REGISTER": "Create Account",
         "SUBMITTING_REGISTER": "Registering...",
         "ALREADY_HAVE_ACCOUNT": "Already have an account?",
-        "LOGIN_LINK": "Log in here"
+        "LOGIN_LINK": "Log in here",
+        "FIELD_REQUIRED": "This field is required",
+        "EMAIL_INVALID": "Email is invalid"
+    },
+    "NAV": {
+        "ADOPT": "Adopt",
+        "SHELTERS": "Shelters",
+        "FAVORITES": "Favorites",
+        "LOGIN": "Log in",
+        "REGISTER": "Sign up",
+        "APPLICATIONS_SHORT": "Requests",
+        "PROFILE_SHORT": "Profile"
+    },
+    "ENUMS": {
+        "SPECIES": {
+            "DOG": "Dog",
+            "CAT": "Cat",
+            "OTHER": "Other"
+        },
+        "GENDER": {
+            "MALE": "Male",
+            "FEMALE": "Female"
+        },
+        "SIZE": {
+            "SMALL": "Small",
+            "MEDIUM": "Medium",
+            "LARGE": "Large"
+        }
+    },
+    "PETS": {
+        "HERO_TITLE": "Find your next companion",
+        "HERO_SUBTITLE": "Adoptable pets waiting for a responsible home",
+        "FOUND_COUNT": "{{ count }} pets found",
+        "FILTERS": "Filters",
+        "FILTER_DRAWER_TITLE": "Filter pets",
+        "STATE": "Province / State",
+        "CITY": "City",
+        "SPECIES": "Species",
+        "BREED": "Breed",
+        "SIZE": "Size",
+        "GENDER": "Gender",
+        "SHELTER": "Shelter",
+        "ALL_FEM": "All",
+        "ALL_MASC": "All",
+        "ALL_STATES": "All provinces",
+        "ALL_CITIES": "All cities",
+        "ALL_BREEDS": "All breeds",
+        "ALL_SHELTERS": "All shelters",
+        "SPECIES_PLACEHOLDER": "Dog, Cat...",
+        "SEARCH": "Search",
+        "CLEAR": "Clear",
+        "CLEAR_FILTERS": "Clear filters",
+        "APPLY_FILTERS": "Apply filters",
+        "MORE_FILTERS": "More filters",
+        "EMPTY_TITLE": "No pets found",
+        "EMPTY_SUBTITLE": "Try broadening your search or clearing some of the selected filters.",
+        "VIEW_ALL": "View all pets",
+        "STATUS_AVAILABLE": "For adoption",
+        "ADD_FAVORITE": "Save to favorites",
+        "LEARN_MORE": "Learn more",
+        "YEARS": "years"
+    },
+    "PET_DETAIL": {
+        "BACK_TO_LIST": "Back to pets",
+        "NOT_FOUND_TITLE": "Pet not found",
+        "NOT_FOUND_DESC": "This pet is no longer available or the link is incorrect.",
+        "ABOUT": "About {{ name }}",
+        "SHELTER_DEFAULT": "Partner shelter",
+        "APPLY_CTA": "Apply to adopt {{ name }}",
+        "SAVE": "Save",
+        "SAVED": "Saved"
+    },
+    "FAVORITES": {
+        "TITLE": "My Favorites",
+        "SUBTITLE": "Pets you saved to keep an eye on",
+        "COUNT": "{{ count }} saved",
+        "EMPTY_TITLE": "No favorites yet",
+        "EMPTY_SUBTITLE": "Tap the heart on any pet you like to save it here.",
+        "EXPLORE_CTA": "Explore pets",
+        "REMOVE": "Remove from favorites"
     }
 }

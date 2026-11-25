@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

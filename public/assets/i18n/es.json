@@ -30,6 +30,85 @@
         "SUBMIT_REGISTER": "Crear Cuenta",
         "SUBMITTING_REGISTER": "Registrando...",
         "ALREADY_HAVE_ACCOUNT": "¿Ya tenés cuenta?",
-        "LOGIN_LINK": "Ingresá acá"
+        "LOGIN_LINK": "Ingresá acá",
+        "FIELD_REQUIRED": "Este campo es obligatorio",
+        "EMAIL_INVALID": "El correo electrónico no es válido"
+    },
+    "NAV": {
+        "ADOPT": "Adoptar",
+        "SHELTERS": "Refugios",
+        "FAVORITES": "Favoritos",
+        "LOGIN": "Ingresar",
+        "REGISTER": "Registrarse",
+        "APPLICATIONS_SHORT": "Solicitudes",
+        "PROFILE_SHORT": "Perfil"
+    },
+    "ENUMS": {
+        "SPECIES": {
+            "DOG": "Perro",
+            "CAT": "Gato",
+            "OTHER": "Otro"
+        },
+        "GENDER": {
+            "MALE": "Macho",
+            "FEMALE": "Hembra"
+        },
+        "SIZE": {
+            "SMALL": "Pequeño",
+            "MEDIUM": "Mediano",
+            "LARGE": "Grande"
+        }
+    },
+    "PETS": {
+        "HERO_TITLE": "Encontrá a tu próximo compañero",
+        "HERO_SUBTITLE": "Mascotas en adopción esperando un hogar responsable",
+        "FOUND_COUNT": "{{ count }} mascotas encontradas",
+        "FILTERS": "Filtros",
+        "FILTER_DRAWER_TITLE": "Filtrar mascotas",
+        "STATE": "Provincia",
+        "CITY": "Ciudad",
+        "SPECIES": "Especie",
+        "BREED": "Raza",
+        "SIZE": "Tamaño",
+        "GENDER": "Sexo",
+        "SHELTER": "Refugio",
+        "ALL_FEM": "Todas",
+        "ALL_MASC": "Todos",
+        "ALL_STATES": "Todas las provincias",
+        "ALL_CITIES": "Todas las ciudades",
+        "ALL_BREEDS": "Todas las razas",
+        "ALL_SHELTERS": "Todos los refugios",
+        "SPECIES_PLACEHOLDER": "Perro, Gato...",
+        "SEARCH": "Buscar",
+        "CLEAR": "Limpiar",
+        "CLEAR_FILTERS": "Limpiar filtros",
+        "APPLY_FILTERS": "Aplicar filtros",
+        "MORE_FILTERS": "Más filtros",
+        "EMPTY_TITLE": "No encontramos mascotas",
+        "EMPTY_SUBTITLE": "Probá ampliando tu búsqueda o limpiando algunos de los filtros seleccionados.",
+        "VIEW_ALL": "Ver todas las mascotas",
+        "STATUS_AVAILABLE": "En adopción",
+        "ADD_FAVORITE": "Guardar en favoritos",
+        "LEARN_MORE": "Conocer más",
+        "YEARS": "años"
+    },
+    "PET_DETAIL": {
+        "BACK_TO_LIST": "Volver al listado",
+        "NOT_FOUND_TITLE": "Mascota no encontrada",
+        "NOT_FOUND_DESC": "Esta mascota ya no está disponible o el enlace es incorrecto.",
+        "ABOUT": "Sobre {{ name }}",
+        "SHELTER_DEFAULT": "Refugio asociado",
+        "APPLY_CTA": "Postularme para adoptar a {{ name }}",
+        "SAVE": "Guardar",
+        "SAVED": "Guardado"
+    },
+    "FAVORITES": {
+        "TITLE": "Mis Favoritos",
+        "SUBTITLE": "Mascotas que guardaste para seguir de cerca",
+        "COUNT": "{{ count }} guardadas",
+        "EMPTY_TITLE": "Todavía no tenés favoritos",
+        "EMPTY_SUBTITLE": "Tocá el corazón en cualquier mascota que te guste para guardarla acá.",
+        "EXPLORE_CTA": "Explorar mascotas",
+        "REMOVE": "Quitar de favoritos"
     }
 }

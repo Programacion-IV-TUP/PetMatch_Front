@@ -1,0 +1,284 @@
+<section class="space-y-6 sm:space-y-8">
+
+    <!-- Hero Header -->
+    <div class="text-center max-w-2xl mx-auto space-y-2 pt-2">
+        <h1 class="font-heading text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+            {{ 'PETS.HERO_TITLE' | transloco }}
+        </h1>
+        <p class="text-sm sm:text-base text-stone-600">
+            {{ 'PETS.HERO_SUBTITLE' | transloco }}
+        </p>
+    </div>
+
+    <!-- Mobile Filter Trigger Bar (< lg) -->
+    <div class="flex items-center justify-between lg:hidden bg-white p-3 rounded-2xl border border-stone-200 shadow-sm">
+        <span class="text-sm font-medium text-stone-600 pl-1">
+            {{ 'PETS.FOUND_COUNT' | transloco:{ count: pets().length } }}
+        </span>
+        <p-button [label]="'PETS.FILTERS' | transloco" icon="pi pi-sliders-h" severity="secondary" [outlined]="true"
+            size="small" (onClick)="mobileFiltersOpen.set(true)">
+        </p-button>
+    </div>
+
+    <!-- Desktop Filter Bar (>= lg) -->
+    <form [formGroup]="filterForm" (ngSubmit)="fetchPets()"
+        class="hidden lg:block bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-3">
+
+        <!-- Primary Row -->
+        <div class="grid grid-cols-12 gap-3 items-end">
+
+            <!-- State / Province (2 cols) -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.STATE' | transloco }}</label>
+                <p-select [options]="catalogService.states()" formControlName="state_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_FEM' | transloco" [showClear]="true"
+                    styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <!-- City Cascaded (2 cols) -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.CITY' | transloco }}</label>
+                <p-select [options]="catalogService.cities()" formControlName="city_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_FEM' | transloco"
+                    [disabled]="!filterForm.get('state_id')?.value" [showClear]="true" styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <!-- Species (2 cols) -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.SPECIES' | transloco }}</label>
+                <p-select [options]="speciesOptions()" formControlName="species" optionLabel="label" optionValue="value"
+                    [placeholder]="'PETS.ALL_FEM' | transloco" [showClear]="true" styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <!-- Size (2 cols) -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.SIZE' | transloco }}</label>
+                <p-select [options]="sizeOptions()" formControlName="size" optionLabel="label" optionValue="value"
+                    [placeholder]="'PETS.ALL_MASC' | transloco" [showClear]="true" styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <!-- Gender (1.5 -> 2 cols) -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.GENDER' | transloco }}</label>
+                <p-select [options]="genderOptions()" formControlName="gender" optionLabel="label" optionValue="value"
+                    [placeholder]="'PETS.ALL_MASC' | transloco" [showClear]="true" styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <!-- Actions (2 cols) -->
+            <div class="col-span-2 flex items-center gap-1.5">
+                <button type="button" (click)="desktopMoreFiltersOpen.update(v => !v)"
+                    [title]="'PETS.MORE_FILTERS' | transloco"
+                    [class.bg-orange-50]="desktopMoreFiltersOpen() || hasAdvancedFilters()"
+                    [class.text-orange-600]="desktopMoreFiltersOpen() || hasAdvancedFilters()"
+                    [class.border-orange-200]="desktopMoreFiltersOpen() || hasAdvancedFilters()"
+                    class="px-2.5 py-2.5 rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-50 transition-colors cursor-pointer relative">
+                    <i class="pi pi-sliders-h text-sm"></i>
+                    @if (hasAdvancedFilters()) {
+                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                    }
+                </button>
+
+                <p-button type="submit" [label]="'PETS.SEARCH' | transloco" icon="pi pi-search"
+                    styleClass="w-full"></p-button>
+
+                <button type="button" (click)="clearFilters()" [title]="'PETS.CLEAR_FILTERS' | transloco"
+                    class="p-2.5 rounded-xl text-stone-500 hover:text-stone-800 hover:bg-stone-100 transition-colors cursor-pointer">
+                    <i class="pi pi-filter-slash text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Collapsible Secondary Row: Breed & Shelter -->
+        @if (desktopMoreFiltersOpen()) {
+        <div class="grid grid-cols-12 gap-3 pt-3 border-t border-stone-100">
+            <div class="col-span-4">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.BREED' | transloco }}</label>
+                <p-select [options]="filteredBreeds()" formControlName="breed_id" optionLabel="name" optionValue="id"
+                    [placeholder]="'PETS.ALL_BREEDS' | transloco" [filter]="true" filterBy="name" [showClear]="true"
+                    styleClass="w-full text-sm">
+                </p-select>
+            </div>
+
+            <div class="col-span-4">
+                <label class="block text-xs font-semibold text-stone-600 mb-1">{{ 'PETS.SHELTER' | transloco }}</label>
+                <p-select [options]="catalogService.shelters()" formControlName="shelter_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_SHELTERS' | transloco" [filter]="true" filterBy="name"
+                    [showClear]="true" styleClass="w-full text-sm">
+                </p-select>
+            </div>
+        </div>
+        }
+    </form>
+
+    <!-- Mobile Filter Drawer (< lg) -->
+    <p-drawer [(visible)]="mobileFiltersOpen" [header]="'PETS.FILTER_DRAWER_TITLE' | transloco" position="bottom"
+        styleClass="!h-[85vh] rounded-t-3xl">
+        <form [formGroup]="filterForm" (ngSubmit)="fetchPets()" class="space-y-4 pt-2">
+            <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.STATE' | transloco }}</label>
+                <p-select [options]="catalogService.states()" formControlName="state_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_STATES' | transloco" [showClear]="true"
+                    styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.CITY' | transloco }}</label>
+                <p-select [options]="catalogService.cities()" formControlName="city_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_CITIES' | transloco"
+                    [disabled]="!filterForm.get('state_id')?.value" [showClear]="true" styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.SPECIES' | transloco }}</label>
+                <p-select [options]="speciesOptions()" formControlName="species" optionLabel="label" optionValue="value"
+                    [placeholder]="'PETS.SPECIES_PLACEHOLDER' | transloco" [showClear]="true" styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.BREED' | transloco }}</label>
+                <p-select [options]="filteredBreeds()" formControlName="breed_id" optionLabel="name" optionValue="id"
+                    [placeholder]="'PETS.ALL_BREEDS' | transloco" [filter]="true" filterBy="name" [showClear]="true"
+                    styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.SIZE' | transloco }}</label>
+                    <p-select [options]="sizeOptions()" formControlName="size" optionLabel="label" optionValue="value"
+                        [placeholder]="'PETS.ALL_MASC' | transloco" [showClear]="true" styleClass="w-full">
+                    </p-select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.GENDER' | transloco
+                        }}</label>
+                    <p-select [options]="genderOptions()" formControlName="gender" optionLabel="label"
+                        optionValue="value" [placeholder]="'PETS.ALL_MASC' | transloco" [showClear]="true"
+                        styleClass="w-full">
+                    </p-select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">{{ 'PETS.SHELTER' | transloco }}</label>
+                <p-select [options]="catalogService.shelters()" formControlName="shelter_id" optionLabel="name"
+                    optionValue="id" [placeholder]="'PETS.ALL_SHELTERS' | transloco" [showClear]="true"
+                    styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-4 border-t border-stone-200">
+                <p-button type="button" [label]="'PETS.CLEAR' | transloco" severity="secondary" [outlined]="true"
+                    styleClass="w-full" (onClick)="clearFilters()">
+                </p-button>
+                <p-button type="submit" [label]="'PETS.APPLY_FILTERS' | transloco" styleClass="w-full"></p-button>
+            </div>
+        </form>
+    </p-drawer>
+
+    <!-- Pets Grid -->
+    @if (isLoading()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+        <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden p-3 space-y-3">
+            <p-skeleton height="12rem" borderRadius="12px"></p-skeleton>
+            <p-skeleton width="60%" height="1.25rem"></p-skeleton>
+            <p-skeleton width="80%" height="0.9rem"></p-skeleton>
+            <p-skeleton height="2.25rem" borderRadius="10px"></p-skeleton>
+        </div>
+        }
+    </div>
+    } @else if (pets().length === 0) {
+    <div class="bg-white rounded-2xl border border-stone-200 p-10 text-center max-w-md mx-auto space-y-3">
+        <div class="w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto">
+            <i class="pi pi-search text-xl"></i>
+        </div>
+        <h3 class="font-heading text-lg font-bold text-stone-900">{{ 'PETS.EMPTY_TITLE' | transloco }}</h3>
+        <p class="text-sm text-stone-600">
+            {{ 'PETS.EMPTY_SUBTITLE' | transloco }}
+        </p>
+        <p-button [label]="'PETS.VIEW_ALL' | transloco" severity="secondary" [outlined]="true" size="small"
+            (onClick)="clearFilters()">
+        </p-button>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        @for (pet of pets(); track pet.id) {
+        <article
+            class="group bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col">
+
+            <!-- Card Image + Top Badges -->
+            <div class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
+                <img [src]="pet.image_url | petImage:pet.name" [alt]="pet.name"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+
+                <span
+                    class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-600/95 text-white shadow-sm">
+                    {{ 'PETS.STATUS_AVAILABLE' | transloco }}
+                </span>
+
+                <button type="button" (click)="onToggleFavorite(pet.id)"
+                    [attr.aria-label]="'PETS.ADD_FAVORITE' | transloco"
+                    class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-600 hover:text-orange-500 flex items-center justify-center shadow-sm transition-colors cursor-pointer">
+                    <i
+                        [class]="favoriteService.isFavorite(pet.id) ? 'pi pi-heart-fill text-orange-500' : 'pi pi-heart'"></i>
+                </button>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+                <div class="space-y-1.5">
+                    <h2 class="font-heading text-lg font-bold text-stone-900 leading-snug">
+                        {{ pet.name }}
+                    </h2>
+
+                    <p class="text-xs text-stone-600">
+                        {{ pet.breed_name || translateEnum('SPECIES', pet.species) }}
+                        @if (pet.age) {
+                        <span> • {{ pet.age }} {{ pet.age_unit || ('PETS.YEARS' | transloco) }}</span>
+                        }
+                    </p>
+
+                    @if (pet.city_name || pet.state_name) {
+                    <p class="text-xs text-stone-500 flex items-center gap-1 pt-0.5">
+                        <i class="pi pi-map-marker text-orange-500 text-[11px]"></i>
+                        <span>{{ pet.city_name }}{{ pet.city_name && pet.state_name ? ', ' : '' }}{{ pet.state_name
+                            }}</span>
+                    </p>
+                    }
+
+                    <!-- Translated Tags -->
+                    <div class="flex flex-wrap gap-1.5 pt-2">
+                        @if (pet.gender) {
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-stone-100 text-stone-700">
+                            {{ translateEnum('GENDER', pet.gender) }}
+                        </span>
+                        }
+                        @if (pet.size) {
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-stone-100 text-stone-700">
+                            {{ translateEnum('SIZE', pet.size) }}
+                        </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <a [routerLink]="['/pets', pet.id]"
+                    class="block w-full text-center py-2 px-4 rounded-xl text-xs font-semibold text-orange-600 border border-orange-200 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">
+                    {{ 'PETS.LEARN_MORE' | transloco }}
+                </a>
+            </div>
+        </article>
+        }
+    </div>
+    }
+</section>

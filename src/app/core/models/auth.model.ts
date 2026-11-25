@@ -8,7 +8,7 @@ export interface User {
     id: number;
     email: string;
     first_name: string;
-    last_name: string;
+    last_name?: string;
     phone?: string;
     address?: UserAddress;
     role?: 'adopter' | 'shelter_manager' | 'admin';
@@ -21,8 +21,11 @@ export interface LoginCredentials {
 }
 
 export interface LoginResponse {
-    token: string;
-    user: User;
+    status: number;
+    data: {
+        token: string;
+        user: User;
+    };
 }
 
 export interface RegisterPayload {
@@ -31,5 +34,4 @@ export interface RegisterPayload {
     email: string;
     password: string;
     phone?: string;
-    address?: UserAddress;
 }

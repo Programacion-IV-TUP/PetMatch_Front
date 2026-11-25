@@ -23,16 +23,18 @@ export class AuthService {
     login(credentials: LoginCredentials): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`${this.API_URL}/login`, credentials).pipe(
             tap(response => {
-                this.tokenStorage.saveToken(response.token);
-                this.tokenStorage.saveUser(response.user);
-                this.currentUserSignal.set(response.user);
+                if (response?.data) {
+                    this.tokenStorage.saveToken(response.data.token);
+                    this.tokenStorage.saveUser(response.data.user);
+                    this.currentUserSignal.set(response.data.user);
+                }
             })
         );
     }
 
     // Dispatch registration payload to POST /signup
-    register(payload: RegisterPayload): Observable<{ message: string; user: User }> {
-        return this.http.post<{ message: string; user: User }>(`${this.API_URL}/signup`, payload);
+    register(payload: RegisterPayload): Observable<{ status: number; message: string; user: User }> {
+        return this.http.post<{ status: number; message: string; user: User }>(`${this.API_URL}/signup`, payload);
     }
 
     // Terminate session on server and clear local storage

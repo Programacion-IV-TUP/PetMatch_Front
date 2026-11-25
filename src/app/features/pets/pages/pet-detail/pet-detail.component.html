@@ -1,0 +1,147 @@
+<section class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Back Navigation -->
+    <div>
+        <a routerLink="/pets"
+            class="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-orange-600 transition-colors">
+            <i class="pi pi-arrow-left text-xs"></i>
+            <span>{{ 'PET_DETAIL.BACK_TO_LIST' | transloco }}</span>
+        </a>
+    </div>
+
+    @if (isLoading()) {
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white p-4 sm:p-6 rounded-3xl border border-stone-200">
+        <div class="lg:col-span-6">
+            <p-skeleton height="22rem" borderRadius="16px"></p-skeleton>
+        </div>
+        <div class="lg:col-span-6 space-y-4">
+            <p-skeleton width="50%" height="2rem"></p-skeleton>
+            <p-skeleton width="75%" height="1.1rem"></p-skeleton>
+            <p-skeleton height="6rem" borderRadius="12px"></p-skeleton>
+            <p-skeleton height="3rem" borderRadius="12px"></p-skeleton>
+        </div>
+    </div>
+    } @else if (hasError() || !pet()) {
+    <div class="bg-white rounded-3xl border border-stone-200 p-10 text-center max-w-md mx-auto space-y-3">
+        <div class="w-12 h-12 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto">
+            <i class="pi pi-exclamation-triangle text-xl"></i>
+        </div>
+        <h2 class="font-heading text-lg font-bold text-stone-900">{{ 'PET_DETAIL.NOT_FOUND_TITLE' | transloco }}</h2>
+        <p class="text-sm text-stone-600">{{ 'PET_DETAIL.NOT_FOUND_DESC' | transloco }}</p>
+        <a routerLink="/pets"
+            class="inline-block mt-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-orange-500 hover:bg-orange-600 transition-colors">
+            {{ 'PET_DETAIL.BACK_TO_LIST' | transloco }}
+        </a>
+    </div>
+    } @else if (pet(); as p) {
+    <div
+        class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 bg-white p-4 sm:p-6 rounded-3xl border border-stone-200 shadow-sm">
+
+        <!-- Left Column: Pet Image -->
+        <div class="lg:col-span-6">
+            <div class="relative aspect-[4/3] lg:aspect-square rounded-2xl overflow-hidden bg-stone-100">
+                <img [src]="p.image_url | petImage:p.name" [alt]="p.name" class="w-full h-full object-cover" />
+
+                <!-- Status Badge -->
+                @if (p.status === 'in_process') {
+                <span
+                    class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/95 text-white shadow-sm">
+                    {{ 'PETS.STATUS_IN_PROCESS' | transloco }}
+                </span>
+                } @else {
+                <span
+                    class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-teal-600/95 text-white shadow-sm">
+                    {{ 'PETS.STATUS_AVAILABLE' | transloco }}
+                </span>
+                }
+
+                <!-- Favorite Button -->
+                <button type="button" (click)="onToggleFavorite()" [attr.aria-label]="'PETS.ADD_FAVORITE' | transloco"
+                    class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-stone-600 hover:text-orange-500 flex items-center justify-center shadow-md transition-colors cursor-pointer">
+                    <i class="text-lg"
+                        [class]="favoriteService.isFavorite(p.id) ? 'pi pi-heart-fill text-orange-500' : 'pi pi-heart'"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: Details & Adoption CTA -->
+        <div class="lg:col-span-6 flex flex-col justify-between space-y-6">
+            <div class="space-y-4">
+                <div>
+                    <h1 class="font-heading text-2xl sm:text-3xl font-extrabold text-stone-900">
+                        {{ p.name }}
+                    </h1>
+                    <p class="text-sm text-stone-600 mt-1">
+                        {{ p.breed_name || translateEnum('SPECIES', p.species) }}
+                        @if (p.age) {
+                        <span> • {{ p.age }} {{ p.age_unit || ('PETS.YEARS' | transloco) }}</span>
+                        }
+                    </p>
+                </div>
+
+                <!-- Attribute Pills -->
+                <div class="flex flex-wrap gap-2">
+                    @if (p.species) {
+                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700">
+                        {{ translateEnum('SPECIES', p.species) }}
+                    </span>
+                    }
+                    @if (p.gender) {
+                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700">
+                        {{ translateEnum('GENDER', p.gender) }}
+                    </span>
+                    }
+                    @if (p.size) {
+                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700">
+                        {{ translateEnum('SIZE', p.size) }}
+                    </span>
+                    }
+                </div>
+
+                <!-- Description -->
+                @if (p.description) {
+                <div class="space-y-1.5 pt-2">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-stone-400">
+                        {{ 'PET_DETAIL.ABOUT' | transloco:{ name: p.name } }}
+                    </h2>
+                    <p class="text-sm text-stone-700 leading-relaxed whitespace-pre-line">
+                        {{ p.description }}
+                    </p>
+                </div>
+                }
+
+                <!-- Shelter Info Box -->
+                <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-1.5">
+                    <div class="flex items-center gap-2 text-sm font-bold text-stone-800">
+                        <i class="pi pi-home text-orange-500"></i>
+                        <span>{{ p.shelter_name || ('PET_DETAIL.SHELTER_DEFAULT' | transloco) }}</span>
+                    </div>
+                    @if (p.city_name || p.state_name) {
+                    <p class="text-xs text-stone-600 flex items-center gap-1.5 pl-6">
+                        <i class="pi pi-map-marker text-stone-400 text-[11px]"></i>
+                        <span>{{ p.city_name }}{{ p.city_name && p.state_name ? ', ' : '' }}{{ p.state_name }}</span>
+                    </p>
+                    }
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-4 border-t border-stone-100 flex flex-col sm:flex-row gap-3">
+                <button type="button" (click)="onApplyAdoption()"
+                    class="flex-1 py-3 px-5 rounded-xl text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 shadow-sm transition-colors cursor-pointer flex items-center justify-center gap-2">
+                    <i class="pi pi-heart-fill"></i>
+                    <span>{{ 'PET_DETAIL.APPLY_CTA' | transloco:{ name: p.name } }}</span>
+                </button>
+
+                <button type="button" (click)="onToggleFavorite()"
+                    class="py-3 px-4 rounded-xl text-sm font-semibold border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors cursor-pointer flex items-center justify-center gap-2">
+                    <i
+                        [class]="favoriteService.isFavorite(p.id) ? 'pi pi-heart-fill text-orange-500' : 'pi pi-heart'"></i>
+                    <span>{{ (favoriteService.isFavorite(p.id) ? 'PET_DETAIL.SAVED' : 'PET_DETAIL.SAVE') | transloco
+                        }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+</section>
